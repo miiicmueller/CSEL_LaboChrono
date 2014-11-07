@@ -22,23 +22,22 @@
 /**
  * Driver input function
  */
-static int __init char_skel_init(void)
+static int __init mlaboChrono_init(void)
     {
-
     return 0;
     }
 
 /**
  * Driver exit function
  */
-static int __exit char_skel_exit(void)
+static int __exit mlaboChrono_exit(void)
     {
 
     return 0;
     }
 
-module_init(char_skel_init);
-module_exit(char_skel_exit);
+module_init(mlaboChrono_init);
+module_exit(mlaboChrono_exit);
 
 MODULE_AUTHOR("Cyrille Savy/Michael Mueller");
 MODULE_LICENSE("GPL");
