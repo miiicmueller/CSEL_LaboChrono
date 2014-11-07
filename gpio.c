@@ -87,7 +87,8 @@ static void gpio_isr(void* handle __attribute__ ((unused)))
 
 int gpio_init()
     {
-    for (int i = 0; i < GPIO_NB_OF_PORTS; i++)
+    int i;
+    for (i = 0; i < GPIO_NB_OF_PORTS; i++)
 	{
 	gpio[i] = ioremap(gpio_phys[i], sizeof(struct gpio_ctrl));
 	}
@@ -99,7 +100,8 @@ int gpio_init()
 
 void gpio_cleanup()
     {
-    for (int i = 0; i < GPIO_NB_OF_PORTS; i++)
+    int i;
+    for (i = 0; i < GPIO_NB_OF_PORTS; i++)
 	{
 	iounmap(gpio[i]);
 	}

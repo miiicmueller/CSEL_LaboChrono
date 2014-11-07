@@ -25,6 +25,7 @@
 								<option id="gnu.c.compiler.option.include.paths.1630096619" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/lmi/workspace/buildroot/output/build/linux-headers-3.7.9/include"/>
 									<listOptionValue builtIn="false" value="/home/lmi/workspace/buildroot/output/build/linux-headers-3.7.9"/>
+									<listOptionValue builtIn="false" value="/home/lmi/workspace/buildroot/output/build/linux-headers-3.7.9/arch/arm/plat-mxc/include/"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.148532192" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
