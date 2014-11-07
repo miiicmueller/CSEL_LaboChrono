@@ -26,7 +26,6 @@ static int __init char_skel_init(void)
     {
 
     return 0;
-
     }
 
 /**
@@ -36,7 +35,6 @@ static int __exit char_skel_exit(void)
     {
 
     return 0;
-
     }
 
 module_init(char_skel_init);
