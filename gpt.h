@@ -10,6 +10,7 @@
 
 #include "chronometre.h"
 #include <linux/stddef.h>
+#include <mach/mx27.h>
 
 /**
  * GPT Control Register (TCTL) bit fields
@@ -44,7 +45,20 @@
 #define GPT5_BASE_ADDR  0x1001a000
 #define GPT6_BASE_ADDR  0x1001f000
 
+#define getGptBaseAddress(x)	(x==kGpt1)?GPT1_BASE_ADDR:((x==kGpt2)?GPT2_BASE_ADDR:((x==kGpt3)?GPT3_BASE_ADDR:((x==kGpt4)?GPT4_BASE_ADDR:((x==kGpt5)? \
+				GPT5_BASE_ADDR:((x==kGpt6)?GPT6_BASE_ADDR:0)))))
+
 #define GPT_REG_SIZE 	0x18
+
+typedef enum
+    {
+    kGpt1 = MX27_INT_GPT1,
+    kGpt2 = MX27_INT_GPT2,
+    kGpt3 = MX27_INT_GPT3,
+    kGpt4 = MX27_INT_GPT4,
+    kGpt5 = MX27_INT_GPT5,
+    kGpt6 = MX27_INT_GPT6,
+    } gptTypeEnum;
 
 /**
  * GPT Register Definition (timer 1 to 6)
@@ -63,20 +77,23 @@ typedef struct
     {
 	gptRegsStruct* gptRegisters;
 	struct stopwatch* stopWatch;
+	gptTypeEnum gptType;
     } gptDevStruct;
 
 /**
  * Functions
  */
 
-void mGpt_EnableGpts();
-void mGpt_DisableGpts();
+void mGpt_EnableGpts(gptDevStruct *aGpt);
+void mGpt_DisableGpts(gptDevStruct *aGpt);
 
 /**
  * Base time = 1ms
  */
-void mGpt_Open(uint32_t aPerdiodGpt1, uint32_t aPerdiodGpt2);
-int mGpt_Setup(struct stopwatch* aStopWatchStruct);
-void mGpt_Release(void);
+void mGpt_Open(gptDevStruct *aGpt, uint32_t aPerdiodGpt);
+int mGpt_Setup(gptDevStruct *aGpt, gptTypeEnum aGptTypeEnum,
+	struct stopwatch* aStopWatchStruct,
+	irqreturn_t* (aIrqThread)(int irq, void* dev_id));
+void mGpt_Release(gptDevStruct *aGpt);
 
 #endif /* GPT_H_ */
