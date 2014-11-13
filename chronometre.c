@@ -13,6 +13,7 @@
 #include "chronometre.h"
 #include "gpt.h"
 #include "display.h"
+#include "gpio.h"
 
 //For eclipse developpement
 #define ECLIPSE_IGNORE
@@ -30,43 +31,6 @@ static gptDevStruct gGpt3;
 /**
  * Driver input function
  */
-
-irqreturn_t ISR_GPT2_thread(int irq, void *dev_id)
-    {
-    gptDevStruct *gGpt = (gptDevStruct*) dev_id;
-
-    debugprint("GPT 2 Thread");
-
-    if (gGpt->stopWatch->function == start)
-	gGpt->stopWatch->is_counting_enabled = true;
-    if (gGpt->stopWatch->function == reset)
-	{
-	gGpt->stopWatch->is_counting_enabled = false;
-	gGpt->stopWatch->counter_value = 0;
-	}
-
-    if (gGpt->stopWatch->is_counting_enabled)
-	gGpt->stopWatch->counter_value++;
-    if (gGpt->stopWatch->function != stop)
-	gGpt->stopWatch->display_value = gGpt->stopWatch->counter_value;
-
-    return IRQ_HANDLED;
-
-    }
-
-irqreturn_t ISR_GPT3_thread(int irq, void *dev_id)
-    {
-    gptDevStruct *gGpt = (gptDevStruct*) dev_id;
-    debugprint("GPT 3 Thread");
-
-    display_seg7(gGpt->stopWatch->display_value, gGpt->stopWatch->is_left);
-
-    debugprint("Gptt left = %d", gGpt->stopWatch->is_left);
-    gGpt->stopWatch->is_left = (bool) !gGpt->stopWatch->is_left;
-
-    return IRQ_HANDLED;
-    }
-
 static int __init mlaboChrono_init(void)
     {
 
@@ -89,8 +53,16 @@ static int __init mlaboChrono_init(void)
     mGpt_Open(&gGpt2, 100);
     mGpt_Open(&gGpt3, 10);
 
-    mGpt_EnableGpts(&gGpt2);
-    mGpt_EnableGpts(&gGpt3);
+
+ 	gpio_attach(GPIO_PORT_E, 3, GPIO_IRQ_FALLING, gpio_start, &stopwatch);
+    gpio_enable(GPIO_PORT_E, 3);
+    gpio_attach(GPIO_PORT_E, 4, GPIO_IRQ_FALLING, gpio_stop, &stopwatch);
+    gpio_enable(GPIO_PORT_E, 4);
+    gpio_attach(GPIO_PORT_E, 6, GPIO_IRQ_FALLING, gpio_reset, &stopwatch);
+    gpio_enable(GPIO_PORT_E, 6);
+
+    mGpt_Open(100, 10);
+    mGpt_EnableGpts();
 
     debugprint("Real application running...");
 
@@ -102,7 +74,8 @@ static int __init mlaboChrono_init(void)
  */
 static int __exit mlaboChrono_exit(void)
     {
-
+    gpio_cleanup();
+   
     mGpt_Release(&gGpt2);
     mGpt_Release(&gGpt3);
 

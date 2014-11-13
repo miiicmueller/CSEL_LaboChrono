@@ -16,7 +16,7 @@
 #include <linux/io.h>
 #include <linux/ioport.h>
 #include <linux/interrupt.h>
-
+#include <mach/mx27.h>
 #include "gpt.h"
 #include "display.h"
 

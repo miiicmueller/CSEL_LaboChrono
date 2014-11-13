@@ -17,33 +17,45 @@
 /**
  * List of GPIO ports of the i.MX27
  */
-enum gpio_ports {GPIO_PORT_A, GPIO_PORT_B, GPIO_PORT_C,
-		 GPIO_PORT_D, GPIO_PORT_E, GPIO_PORT_F,
-		 GPIO_NB_OF_PORTS};
+enum gpio_ports
+    {
+    GPIO_PORT_A,
+    GPIO_PORT_B,
+    GPIO_PORT_C,
+    GPIO_PORT_D,
+    GPIO_PORT_E,
+    GPIO_PORT_F,
+    GPIO_NB_OF_PORTS
+    };
 
 /**
  * GPIO operation modes
  */
-enum gpio_modes {GPIO_INPUT, 
-		 GPIO_OUTPUT/*, 
-		 GPIO_IRQ_RISING, 
-		 GPIO_IRQ_FALLING, 
-		 GPIO_IRQ_HIGH, 
-		 GPIO_IRQ_LOW*/};
+enum gpio_modes
+    {
+    GPIO_INPUT,
+    GPIO_OUTPUT/*,
+     GPIO_IRQ_RISING,
+     GPIO_IRQ_FALLING,
+     GPIO_IRQ_HIGH,
+     GPIO_IRQ_LOW*/
+    };
 
 /**
  * GPIO interrupt modes
  */
-enum gpio_interrupt_modes {GPIO_IRQ_RISING, 
-			   GPIO_IRQ_FALLING, 
-			   GPIO_IRQ_HIGH, 
-			   GPIO_IRQ_LOW};
+enum gpio_interrupt_modes
+    {
+    GPIO_IRQ_RISING,
+    GPIO_IRQ_FALLING,
+    GPIO_IRQ_HIGH,
+    GPIO_IRQ_LOW
+    };
 
 /**
  * Prototype of the interrupt service routine
  */
-typedef void (*gpio_isr_t) (void* handle);
-
+typedef void (*gpio_isr_t)(void* handle);
 
 /**
  * method to initialize the GPIO resources
@@ -51,12 +63,10 @@ typedef void (*gpio_isr_t) (void* handle);
  */
 extern int gpio_init();
 
-
 /**
  * method to release all the GPIO resources
  */
 extern void gpio_cleanup(void);
-
 
 /**
  * method to configure I/O ports either as output or as interrupt source (falling edge).
@@ -66,16 +76,16 @@ extern void gpio_cleanup(void);
  * @param mode operation mode of the pins to be configured
  * @return execution status (0=success, -1=error)
  */
-extern int gpio_configure (enum gpio_ports port, uint32_t bitmask, enum gpio_modes mode);
+extern int gpio_configure(enum gpio_ports port, uint32_t bitmask,
+	enum gpio_modes mode);
 
 /**
  * method to get the status of the specified pin
  *
  * @param port port number to be configured
- * @return bitmask 
+ * @return bitmask
  */
-extern uint32_t gpio_getbits (enum gpio_ports port);
-
+extern uint32_t gpio_getbits(enum gpio_ports port);
 
 /**
  * method to set all specified pins to 1
@@ -83,8 +93,7 @@ extern uint32_t gpio_getbits (enum gpio_ports port);
  * @param port port number to be configured
  * @param bitmask list of pins to be configured
  */
-extern void gpio_setbits (enum gpio_ports port, uint32_t bitmask);
-
+extern void gpio_setbits(enum gpio_ports port, uint32_t bitmask);
 
 /**
  * method to reset all specified pins to 0
@@ -92,11 +101,10 @@ extern void gpio_setbits (enum gpio_ports port, uint32_t bitmask);
  * @param port port number to be configured
  * @param bitmask list of pins to be configured
  */
-extern void gpio_resetbits (enum gpio_ports port, uint32_t bitmask);
-
+extern void gpio_resetbits(enum gpio_ports port, uint32_t bitmask);
 
 /**
- * method to attach an interrupt service routine a pin previously 
+ * method to attach an interrupt service routine a pin previously
  * configured as interrupt source
  *
  * @param port port number to which the ISR should be attached
@@ -106,12 +114,8 @@ extern void gpio_resetbits (enum gpio_ports port, uint32_t bitmask);
  * @param handle paramter passed as argument to the ISR when called
  * @return execution status (0=success, -1=error)
  */
-extern int gpio_attach (
-	enum gpio_ports port, 
-	uint32_t pin, 
-	enum gpio_interrupt_modes mode, 
-	gpio_isr_t routine, 
-	void* handle);
+extern int gpio_attach(enum gpio_ports port, uint32_t pin,
+	enum gpio_interrupt_modes mode, gpio_isr_t routine, void* handle);
 
 /**
  * method to detach the interrupt service routine
@@ -119,7 +123,7 @@ extern int gpio_attach (
  * @param port port number from which the ISR should be detached
  * @param pin pin number from which the ISR should be detached
  */
-extern void gpio_detach (enum gpio_ports port, uint32_t pin);
+extern void gpio_detach(enum gpio_ports port, uint32_t pin);
 
 /**
  * method to enable interrupt on the specified pin
@@ -129,7 +133,6 @@ extern void gpio_detach (enum gpio_ports port, uint32_t pin);
  */
 extern void gpio_enable(enum gpio_ports port, uint32_t pin);
 
-
 /**
  * method to disable interrupt on the specified pin
  *
@@ -137,6 +140,5 @@ extern void gpio_enable(enum gpio_ports port, uint32_t pin);
  * @param pin pin number to be disabled
  */
 extern void gpio_disable(enum gpio_ports port, uint32_t pin);
-
 
 #endif
